@@ -14,7 +14,7 @@
 :root{--bg:#140a0d;--card:rgba(34,15,20,.92);--line:#4a2830;--wine:#7a1f33;--wine2:#a3324d;--amber:#e8a650;--text:#f6ebe2;--mute:#c9b3a6}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.6 Heebo,Arial,sans-serif}
+body{margin:0;overflow-x:clip;background:var(--bg);color:var(--text);font:400 17px/1.6 Heebo,Arial,sans-serif}
 h1,h2,h3{font-family:Rubik,Heebo,sans-serif;margin:0}
 .halo{text-shadow:0 2px 6px rgba(0,0,0,.9),0 0 22px rgba(0,0,0,.7)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
@@ -79,16 +79,67 @@ input[type=email],input[type=tel]{direction:ltr;text-align:right}
 .party button{flex:1;font:700 18px Rubik;color:var(--text);background:#1a0c10;border:1px solid var(--line);border-radius:12px;padding:10px 0;cursor:pointer}
 .party button.on{background:var(--wine);border-color:var(--amber)}
 .party button:disabled{opacity:.3;cursor:not-allowed}
-.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:8px 0 18px}
-.it{position:relative;cursor:pointer;background:#1a0c10;border:1px solid var(--line);border-radius:14px;padding:12px 10px;text-align:center;transition:.2s}
-.it input{position:absolute;opacity:0;pointer-events:none}
-.it .e{font-size:30px;display:block}
-.it .nm{font-weight:700;font-size:15px;line-height:1.3;display:block}
-.it .lf{font-size:12.5px;color:var(--mute)}
-.it:hover{border-color:#7a4a52}
-.it.sel{border-color:var(--amber);background:rgba(122,31,51,.55);box-shadow:0 0 0 3px rgba(232,166,80,.2)}
-.it.gone{opacity:.38;cursor:not-allowed}
-.it.gone .lf{color:#ff9b9b}
+/* the table */
+.tablewrap{perspective:1400px;margin:6px 0 26px}
+.table{position:relative;border-radius:34px;padding:38px 22px;background:#2a160e url(img/table.jpg) center/cover;
+  box-shadow:0 40px 70px -20px rgba(0,0,0,.85),inset 0 0 0 9px #3b2114,inset 0 0 0 11px #6b3f24,inset 0 0 90px rgba(0,0,0,.75);
+  transform:rotateX(28deg) translateY(40px);opacity:0;transition:transform 1.1s cubic-bezier(.2,.8,.2,1),opacity .8s}
+.table.on{transform:none;opacity:1}
+.table::before{content:"";position:absolute;inset:50% 7% auto;height:58px;transform:translateY(-50%);border-radius:6px;
+  background:linear-gradient(90deg,transparent,rgba(122,31,51,.82) 7%,rgba(122,31,51,.82) 93%,transparent);
+  border-block:1px dashed rgba(232,166,80,.45);box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.table::after{content:"שולחן ערב קלוד ויין";position:absolute;inset:50% 0 auto;transform:translateY(-50%);text-align:center;
+  font:800 15px Rubik;letter-spacing:6px;color:rgba(246,235,226,.55);pointer-events:none}
+.plates{position:relative;z-index:1;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));row-gap:96px;column-gap:10px}
+.plate{all:unset;grid-column:var(--a);grid-row:var(--b);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;-webkit-tap-highlight-color:transparent;opacity:0}
+.plate:nth-child(n){--rot:calc(var(--d) * 37deg)}
+.table.on .plate{animation:drop .75s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(.35s + var(--d) * 55ms)}
+@keyframes drop{0%{opacity:0;transform:translateY(-90px) scale(1.6) rotate(-40deg)}60%{opacity:1}100%{opacity:1;transform:none}}
+.plate .disc{width:min(100%,118px);aspect-ratio:1;border-radius:50%;position:relative;transform:rotate(var(--rot));
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1),filter .4s,box-shadow .4s;box-shadow:0 12px 18px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.7)}
+.plate img{width:100%;height:100%;border-radius:50%;display:block;pointer-events:none}
+.plate .cap{font-size:13px;font-weight:700;line-height:1.2;text-align:center;background:rgba(20,10,13,.82);padding:3px 10px;border-radius:999px;white-space:nowrap;transition:.3s}
+.plate:not(.taken):hover .disc,.plate:focus-visible .disc{transform:translateY(-10px) scale(1.08) rotate(calc(var(--rot) + 25deg));box-shadow:0 26px 30px rgba(0,0,0,.6)}
+.plate.sel .disc{transform:translateY(-12px) scale(1.14) rotate(calc(var(--rot) + 200deg));animation:glow 1.4s ease-in-out infinite alternate}
+.plate.sel .cap{background:var(--amber);color:#1a0d10}
+@keyframes glow{from{box-shadow:0 0 0 3px var(--amber),0 0 18px 4px rgba(232,166,80,.45),0 24px 30px rgba(0,0,0,.6)}to{box-shadow:0 0 0 5px var(--amber),0 0 46px 14px rgba(232,166,80,.65),0 24px 30px rgba(0,0,0,.6)}}
+.plates.picking .plate:not(.sel):not(.taken) .disc{filter:brightness(.75)}
+.plate.taken{cursor:default}
+.plate.taken .disc{filter:grayscale(.9) brightness(.42)}
+.plate.taken .cap{opacity:.6}
+.plate .card{position:absolute;top:30%;inset-inline:-6px;margin:auto;width:max-content;max-width:110%;transform:rotate(-8deg) scale(0);
+  background:#f6ebe2;color:#3b0f1a;font:800 13px Rubik;padding:4px 10px;border-radius:4px;box-shadow:0 6px 14px rgba(0,0,0,.5);transition:transform .45s cubic-bezier(.34,1.56,.64,1)}
+.plate.taken .card{transform:rotate(-8deg) scale(1)}
+.plate.mine .card{background:var(--amber)}
+.plate.flash .disc{animation:flash .9s}
+@keyframes flash{30%{transform:scale(1.25) rotate(var(--rot))}}
+.legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;color:var(--mute);font-size:14px;margin-top:14px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-inline-end:6px;vertical-align:-1px}
+@media(max-width:700px){
+  .table{padding:22px 14px}
+  .table::before{inset:6% auto 6% 50%;width:52px;height:auto;transform:translateX(-50%);border-block:0;border-inline:1px dashed rgba(232,166,80,.45);
+    background:linear-gradient(180deg,transparent,rgba(122,31,51,.82) 5%,rgba(122,31,51,.82) 95%,transparent)}
+  .table::after{inset:0 auto 0 50%;transform:translateX(-50%);writing-mode:vertical-rl;display:flex;align-items:center;justify-content:center}
+  .plates{grid-template-columns:minmax(0,1fr) minmax(0,1fr);row-gap:16px;column-gap:84px}
+  .plate{grid-column:var(--b);grid-row:var(--a)}
+  .plate .disc{width:min(100%,104px)}
+}
+/* chosen item in the form */
+.pick{display:flex;align-items:center;gap:12px;background:#1a0c10;border:1px dashed var(--line);border-radius:14px;padding:10px 14px;margin-bottom:16px;min-height:66px;color:var(--mute);transition:.3s}
+.pick img{width:46px;height:46px;border-radius:50%;animation:spinIn .6s cubic-bezier(.34,1.56,.64,1)}
+.pick.on{border:1px solid var(--amber);color:var(--text);background:rgba(122,31,51,.35)}
+@keyframes spinIn{from{transform:scale(0) rotate(-180deg)}}
+.formcard{transition:box-shadow .4s}
+.formcard.ready{box-shadow:0 0 0 2px rgba(232,166,80,.5),0 20px 50px rgba(232,166,80,.12)}
+/* confetti + bokeh */
+.cf{position:fixed;z-index:50;pointer-events:none;border-radius:2px}
+.bokeh{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bokeh span{position:absolute;bottom:-40px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,120,.55),rgba(255,180,90,0) 70%);animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-110vh) translateX(var(--dx))}}
+.reveal.on .p{animation:fadeUp .6s both;animation-delay:calc(var(--k) * 70ms)}
+.p{transition:transform .3s,border-color .3s}.p:hover{transform:translateY(-4px) rotate(-.5deg);border-color:var(--amber)}
+.cta{animation:fadeUp .8s both .48s,bob 2.6s ease-in-out 1.5s infinite}
+@keyframes bob{50%{transform:translateY(-4px)}}
 .submit{width:100%;border:0;cursor:pointer;background:var(--amber);color:#1a0d10;font:800 21px Rubik;padding:16px;border-radius:999px;margin-top:4px}
 .submit:disabled{opacity:.6;cursor:wait}
 .err{color:#ffb4b4;font-weight:500;min-height:1.4em;margin-top:10px;text-align:center}
@@ -121,6 +172,7 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:30px 20px 50px
 
 <header class="hero">
   <div class="bg"></div>
+  <div class="bokeh"></div>
   <div class="in halo">
     <div class="kicker">🍷 הזמנה</div>
     <h1>ערב קלוד ויין</h1>
@@ -173,17 +225,20 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:30px 20px 50px
     <h2>מה להביא</h2>
     <div class="bring">
       <div class="b"><div class="n">1</div><b>מחשב נייד + מטען</b><br>שמותקן עליו Claude Desktop<br><span style="color:var(--mute);font-size:15px">(תקבלו הוראות במייל, לא לדאוג)</span></div>
-      <div class="b"><div class="n">2</div><b>משהו לשולחן</b><br>בוחרים למטה 👇</div>
+      <div class="b"><div class="n">2</div><b>משהו לשולחן</b><br>מסמנים למטה 👇</div>
     </div>
   </section>
 
   <section id="signup" class="reveal">
-    <h2>הרשמה</h2>
-    <p class="sub">כל אחד מביא משהו קטן, ויוצא שולחן מלא. מה שכבר נלקח מסומן.</p>
-    <div class="formcard">
+    <h2>הרשמה: מה אתם מביאים לשולחן?</h2>
+    <p class="sub">כל אחד מביא משהו קטן, ויוצא שולחן מלא. סמנו על השולחן מה אתם מביאים.</p>
+    <div class="tablewrap"><div class="table" id="table"><div class="plates" id="plates"></div></div>
+      <div class="legend"><span><i style="background:var(--amber)"></i>הבחירה שלכם</span><span><i style="background:#555"></i>כבר נלקח</span></div></div>
+    <div class="formcard" id="formcard">
       <div class="seats"><span id="seatsTxt">בודקים כמה מקומות נשארו…</span><div class="bar"><i id="seatsBar"></i></div></div>
 
       <form id="form" novalidate>
+        <div class="pick" id="pick">👆 עוד לא בחרתם צלחת על השולחן</div>
         <div class="row">
           <label class="f"><span>שם</span><input id="name" autocomplete="name" required></label>
           <label class="f"><span>מייל <small>(לשם נשלח האישור)</small></span><input id="email" type="email" autocomplete="email" required></label>
@@ -192,8 +247,6 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:30px 20px 50px
           <label class="f"><span>כמה מגיעים?</span><div class="party" id="party"></div></label>
           <label class="f"><span>טלפון <small>(לא חובה)</small></span><input id="phone" type="tel" autocomplete="tel"></label>
         </div>
-        <span style="font-weight:700">מה מביאים?</span>
-        <div class="items" id="items"></div>
         <button class="submit" id="submit" type="submit">שמרו לי מקום 🍷</button>
         <div class="err" id="err"></div>
       </form>
@@ -231,79 +284,143 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:30px 20px 50px
 <footer>🍷 ערב קלוד ויין · נתראה ברביעי</footer>
 
 <script>
-const SCRIPT_URL = 'PASTE_APPS_SCRIPT_URL_HERE';
-const LIVE = SCRIPT_URL.startsWith('https://script.google.com/');
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-CqmrwhvTNykFo4mq8MiZFjjZIUtsLHcieZsJJBjNfKVC7l1V12261HWUdJNjEBq8MQ/exec';
+const LIVE = SCRIPT_URL.startsWith('https://script.google.com/') && !location.search.includes('demo');
 
-// fallback when the server can't be reached (same list as Code.gs)
+// fallback until the server answers (same list as Code.gs)
 let state = {capacity:20, seatsLeft:20, maxParty:4, items:[
-  {id:'wine',name:'בקבוק יין',icon:'🍷',left:2},{id:'salad',name:'סלט',icon:'🥗',left:2},
-  {id:'cheese',name:'גבינות',icon:'🧀',left:2},{id:'bread',name:'לחם',icon:'🥖',left:2},
-  {id:'crackers',name:'קרקרים',icon:'🍘',left:2},{id:'quiche',name:'פשטידה',icon:'🥧',left:2},
-  {id:'dips',name:'זיתים ומטבלים',icon:'🫒',left:2},
-  {id:'dessert',name:'קינוח',icon:'🍰',left:2}]};
-let party = 1, item = null;
+  ['wine','בקבוק יין'],['salad','סלט'],['cheese','גבינות'],['bread','לחם'],
+  ['crackers','קרקרים'],['quiche','פשטידה'],['dips','זיתים או מטבלים'],['dessert','קינוח']
+].map(([id,name]) => ({id, name, max:2, left:2}))};
+let party = 1, picked = new Set(), mine = new Set(), busy = false, done = false;
 const $ = id => document.getElementById(id);
+
+function buildTable(){
+  const items = state.items;
+  $('plates').style.setProperty('--n', items.length);
+  $('plates').innerHTML = '';
+  let d = 0;
+  items.forEach((it, i) => {
+    const max = it.max > 0 ? it.max : 2;
+    for (let c = 0; c < max; c++){
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'plate'; b.dataset.id = it.id; b.dataset.copy = c;
+      b.style.cssText = `--a:${i+1};--b:${c+1};--d:${d++}`;
+      b.innerHTML = `<span class="disc"><img src="img/${it.id}.webp" alt=""></span><span class="cap">${it.name}</span><span class="card"></span>`;
+      b.onclick = () => toggle(it.id, b);
+      $('plates').appendChild(b);
+    }
+  });
+}
+
+function toggle(id, el){
+  if (done || el.classList.contains('taken')) return;
+  picked.has(id) ? picked.delete(id) : picked.add(id);
+  const target = () => [...$('plates').children].find(p => p.dataset.id === id && p.classList.contains('sel')) || el;
+  render();
+  const t = target(); t.classList.add('flash'); setTimeout(() => t.classList.remove('flash'), 900);
+}
 
 function render(){
   const s = state, used = s.capacity - s.seatsLeft;
   $('seatsTxt').textContent = s.seatsLeft > 0 ? `נשארו ${s.seatsLeft} מקומות מתוך ${s.capacity}` : 'אין מקומות פנויים';
   $('seatsBar').style.width = (used / s.capacity * 100) + '%';
-  if (s.seatsLeft <= 0 && $('done').hidden){ $('form').hidden = true; $('full').hidden = false; return; }
+  const byId = Object.fromEntries(s.items.map(i => [i.id, i]));
+  [...$('plates').children].forEach(p => {
+    const it = byId[p.dataset.id], c = +p.dataset.copy;
+    const max = it.max > 0 ? it.max : 2, takenN = it.left < 0 ? 0 : max - it.left;
+    const taken = c < takenN;
+    if (it.left === 0 && picked.has(it.id)) picked.delete(it.id);
+    const sel = !taken && c === takenN && picked.has(it.id);
+    const isMine = taken && mine.has(it.id) && c === takenN - 1;
+    p.classList.toggle('taken', taken); p.classList.toggle('sel', sel); p.classList.toggle('mine', isMine);
+    p.querySelector('.card').textContent = isMine ? 'שלכם 🥂' : 'נלקח ✓';
+    p.disabled = taken || done;
+  });
+  $('plates').classList.toggle('picking', picked.size > 0);
+  const list = [...picked].map(id => byId[id]);
+  $('pick').classList.toggle('on', list.length > 0);
+  $('pick').innerHTML = list.length
+    ? list.map(i => `<img src="img/${i.id}.webp" alt="">`).join('') + `<span>מביאים: <b>${list.map(i => i.name).join(', ')}</b></span>`
+    : '👆 סמנו על השולחן מה אתם מביאים';
+  $('formcard').classList.toggle('ready', list.length > 0);
+  if (done) return;
+  if (s.seatsLeft <= 0){ $('form').hidden = true; $('full').hidden = false; return; }
   const maxP = Math.min(s.maxParty, s.seatsLeft);
   if (party > maxP) party = maxP;
   $('party').innerHTML = '';
-  for (let n = 1; n <= s.maxParty; n++){
+  for (let k = 1; k <= s.maxParty; k++){
     const b = document.createElement('button');
-    b.type = 'button'; b.textContent = n; b.disabled = n > maxP;
-    b.className = n === party ? 'on' : '';
-    b.onclick = () => { party = n; render(); };
+    b.type = 'button'; b.textContent = k; b.disabled = k > maxP; b.className = k === party ? 'on' : '';
+    b.onclick = () => { party = k; render(); };
     $('party').appendChild(b);
   }
-  $('items').innerHTML = '';
-  s.items.forEach(i => {
-    const gone = i.left === 0;
-    if (gone && item === i.id) item = null;
-    const l = document.createElement('label');
-    l.className = 'it' + (gone ? ' gone' : '') + (item === i.id ? ' sel' : '');
-    l.innerHTML = `<input type="radio" name="item" value="${i.id}" ${gone?'disabled':''}><span class="e">${i.icon}</span><span class="nm">${i.name}</span>` +
-      `<span class="lf">${gone ? 'כבר נלקח' : i.left < 0 ? 'אין יותר מדי יין' : i.left === 1 ? 'נשאר אחד אחרון' : 'נשארו ' + i.left}</span>`;
-    if (!gone) l.onclick = e => { e.preventDefault(); item = i.id; render(); };
-    $('items').appendChild(l);
-  });
 }
 
-async function load(){
-  if (!LIVE) return render();
-  try { state = await (await fetch(SCRIPT_URL)).json(); } catch(e){}
+async function load(first){
+  if (LIVE && !busy){
+    try { const r = await (await fetch(SCRIPT_URL)).json(); if (r.items) state = r; } catch(e){}
+  }
+  if (first) buildTable();
   render();
 }
 
 $('form').addEventListener('submit', async e => {
   e.preventDefault();
   const name = $('name').value.trim(), email = $('email').value.trim(), phone = $('phone').value.trim();
+  if (!picked.size){ $('table').scrollIntoView({behavior:'smooth', block:'center'}); return err('סמנו על השולחן מה אתם מביאים 🙂'); }
   if (!name) return err('איך קוראים לכם?', 'name');
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return err('המייל לא נראה תקין', 'email');
-  if (!item) return err('בחרו מה מביאים 🙂');
-  $('submit').disabled = true; $('submit').textContent = 'שומרים…'; err('');
+  busy = true; $('submit').disabled = true; $('submit').textContent = 'שומרים…'; err('');
+  const items = [...picked];
   let res = {ok:true};
   try {
     if (LIVE) res = await (await fetch(SCRIPT_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({name, email, phone, party, item})})).json();
-    else await new Promise(r => setTimeout(r, 700));
+      body: JSON.stringify({name, email, phone, party, items})})).json();
+    else { await new Promise(r => setTimeout(r, 700));
+      res = {...state, ok:true, seatsLeft:state.seatsLeft - party, items:state.items.map(i => items.includes(i.id) ? {...i, left:i.left - 1} : i)}; }
   } catch(x){ res = {ok:false, msg:'משהו נתקע בחיבור. נסו שוב בעוד רגע'}; }
-  $('submit').disabled = false; $('submit').textContent = 'שמרו לי מקום 🍷';
+  busy = false; $('submit').disabled = false; $('submit').textContent = 'שמרו לי מקום 🍷';
   if (res.items) state = res;
   if (!res.ok){ render(); return err(res.msg || 'משהו השתבש, נסו שוב'); }
-  const it = state.items.find(i => i.id === item);
-  $('doneTxt').innerHTML = `${party === 1 ? 'מקום אחד שמור' : party + ' מקומות שמורים'} · מביאים ${it.icon} <b>${it.name}</b>`;
+  const names = items.map(id => state.items.find(i => i.id === id).name);
+  mine = new Set(items); picked = new Set(); done = true;
+  $('doneTxt').innerHTML = `${party === 1 ? 'מקום אחד שמור' : party + ' מקומות שמורים'} · מביאים <b>${names.join(', ')}</b>`;
   $('form').hidden = true; $('done').hidden = false;
   render();
+  document.querySelectorAll('.plate.mine').forEach(p => confetti(p));
+  confetti($('done').querySelector('.big'));
 });
 function err(m, focus){ $('err').textContent = m; if (focus) $(focus).focus(); }
 
+function confetti(el){
+  const r = el.getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height/2;
+  const colors = ['#e8a650','#a3324d','#f6ebe2','#ffd28a','#7a1f33'];
+  for (let i = 0; i < 46; i++){
+    const s = document.createElement('i'); s.className = 'cf';
+    const w = 6 + Math.random()*6;
+    s.style.cssText = `left:${cx}px;top:${cy}px;width:${w}px;height:${w*0.45}px;background:${colors[i%5]}`;
+    document.body.appendChild(s);
+    const a = Math.random()*Math.PI*2, v = 90 + Math.random()*170;
+    s.animate([{transform:'translate(-50%,-50%) rotate(0)', opacity:1},
+      {transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v + 140}px) rotate(${Math.random()*720}deg)`, opacity:0}],
+      {duration:1200 + Math.random()*700, easing:'cubic-bezier(.15,.7,.3,1)'}).onfinish = () => s.remove();
+  }
+}
+
+// bokeh in the hero
+const bk = document.querySelector('.bokeh');
+for (let i = 0; i < 16; i++){
+  const s = document.createElement('span'), z = 20 + Math.random()*70;
+  s.style.cssText = `left:${Math.random()*100}%;width:${z}px;height:${z}px;--dx:${(Math.random()-.5)*120}px;animation-duration:${12+Math.random()*16}s;animation-delay:${-Math.random()*20}s;opacity:${.25+Math.random()*.5}`;
+  bk.appendChild(s);
+}
+document.querySelectorAll('.p').forEach((p, i) => p.style.setProperty('--k', i));
+
 const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('on')), {threshold:.12});
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-load();
+document.querySelectorAll('.reveal, #table').forEach(el => io.observe(el));
+load(true);
+setInterval(() => { if (!document.hidden && !done) load(false); }, 25000);
 </script>
 </body>
 </html>
