@@ -295,7 +295,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-CqmrwhvTNykFo4mq8
 const LIVE = SCRIPT_URL.startsWith('https://script.google.com/') && !location.search.includes('demo');
 
 // fallback until the server answers (same list as Code.gs)
-let state = {capacity:20, seatsLeft:20, maxParty:4, items:[
+let state = {capacity:14, seatsLeft:14, maxParty:4, items:[
   ['wine','בקבוק יין'],['salad','סלט'],['cheese','גבינות'],['bread','לחם'],
   ['crackers','קרקרים'],['quiche','פשטידה'],['dips','זיתים או מטבלים'],['dessert','קינוח']
 ].map(([id,name]) => ({id, name, max:2, left:2}))};
