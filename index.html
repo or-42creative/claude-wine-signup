@@ -157,7 +157,12 @@ input[type=email],input[type=tel]{direction:ltr;text-align:right}
 .done .cal{display:inline-block;margin-top:14px;border:2px solid var(--amber);color:var(--amber);font-weight:700;padding:11px 24px;border-radius:999px;text-decoration:none}
 .why{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
 .why .w{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 22px 10px}
-.why .w:first-child{background:linear-gradient(160deg,rgba(122,31,51,.55),rgba(34,15,20,.92))}
+.why .w.wide{grid-column:1/-1;background:linear-gradient(160deg,rgba(232,166,80,.18),rgba(34,15,20,.92))}
+.why .w.wide p{font-size:19px;margin:0 0 14px;max-width:760px}
+.why .w:nth-child(2){background:linear-gradient(160deg,rgba(122,31,51,.55),rgba(34,15,20,.92))}
+.why .ic{display:inline-block;margin-inline-end:10px;animation:wob 3s ease-in-out infinite}
+.why .w:nth-child(2) .ic{animation-delay:-1s}.why .w:nth-child(3) .ic{animation-delay:-2s}
+@keyframes wob{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg) scale(1.1)}}
 .why h2{font-size:clamp(26px,4.5vw,34px);font-weight:800;margin-bottom:8px}
 .why ul,.why ol{padding-inline-start:20px;margin:0 0 12px}
 .why li{margin-bottom:10px;font-size:18px}
@@ -194,8 +199,12 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:30px 20px 50px
 
 <main>
   <section class="reveal why">
+    <div class="w wide">
+      <h2><span class="ic">🌙</span>למה ערב?</h2>
+      <p>כי שמתי לב שלפעמים יש רתיעה מלהצטרף לקלוד קוד בגלל חשש טכני או סתם דחיינות. אז יאללה, בואו נתלבש על זה ערב אחד ונסמן וי על השטות הזאת ✔️</p>
+    </div>
     <div class="w">
-      <h2>למה קלוד?</h2>
+      <h2><span class="ic">✳️</span>למה קלוד?</h2>
       <ul>
         <li>כי זה כבר לא הדבר הבא. <b>זה הדבר הקודם.</b></li>
         <li>כי זה ישפר את העבודה שלכם בכל תחום בסדר גודל אקספוננציאלי, כמו להצמיח <b>עוד 4 זוגות ידיים</b>.</li>
@@ -203,7 +212,7 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:30px 20px 50px
       </ul>
     </div>
     <div class="w">
-      <h2>למה יין?</h2>
+      <h2><span class="ic">🍷</span>למה יין?</h2>
       <ol>
         <li><b>למה לא?</b></li>
         <li>כי לפעמים נצטרך לתת לקלוד פקודה ולחכות רבע שעה שהוא יסיים, אז בינתיים נעשה קצת צחוקים 🍷</li>
