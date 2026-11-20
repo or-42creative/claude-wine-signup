@@ -322,7 +322,9 @@ function buildTable(){
 // picked: item id -> which copy (plate) was clicked
 function toggle(id, copy, el){
   if (done || el.classList.contains('taken')) return;
-  if (picked.get(id) === copy) picked.delete(id); else picked.set(id, copy);
+  const set = picked.get(id) || new Set();
+  set.has(copy) ? set.delete(copy) : set.add(copy);
+  set.size ? picked.set(id, set) : picked.delete(id);
   render();
   el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 900);
 }
@@ -337,24 +339,26 @@ function render(){
     return new Set(Array.from({length:n}, (_, k) => max - 1 - k)); };
   s.items.forEach(it => {
     const t = takenSet(it.id);
-    if (picked.has(it.id) && t.has(picked.get(it.id))){
-      const free = [...Array(it.max > 0 ? it.max : 2).keys()].find(k => !t.has(k));
-      free === undefined ? picked.delete(it.id) : picked.set(it.id, free);
-    }
+    const set = picked.get(it.id);
+    if (set) [...set].forEach(c => { if (t.has(c)){ set.delete(c);
+      const free = [...Array(it.max > 0 ? it.max : 2).keys()].find(k => !t.has(k) && !set.has(k));
+      if (free !== undefined) set.add(free); } });
+    if (set && !set.size) picked.delete(it.id);
   });
   [...$('plates').querySelectorAll('.plate')].forEach(p => {
     const id = p.dataset.id, c = +p.dataset.copy, taken = takenSet(id).has(c);
-    const isMine = taken && mine.get(id) === c;
-    p.classList.toggle('taken', taken); p.classList.toggle('sel', !taken && picked.get(id) === c); p.classList.toggle('mine', isMine);
+    const isMine = taken && !!mine.get(id)?.has(c);
+    p.classList.toggle('taken', taken); p.classList.toggle('sel', !taken && !!picked.get(id)?.has(c)); p.classList.toggle('mine', isMine);
     p.querySelector('.card').textContent = isMine ? 'שלכם 🥂' : 'נלקח ✓';
     p.disabled = taken || done;
   });
   $('plates').querySelectorAll('.grp').forEach(g => g.classList.toggle('has', picked.has(g.dataset.id) || mine.has(g.dataset.id)));
   $('plates').classList.toggle('picking', picked.size > 0);
   const list = [...picked.keys()].map(id => byId[id]);
+  const label = i => i.name + (picked.get(i.id).size > 1 ? ' ×' + picked.get(i.id).size : '');
   $('pick').classList.toggle('on', list.length > 0);
   $('pick').innerHTML = list.length
-    ? list.map(i => `<img src="img/${i.id}.webp" alt="">`).join('') + `<span>מביאים: <b>${list.map(i => i.name).join(', ')}</b></span>`
+    ? list.map(i => `<img src="img/${i.id}.webp" alt="">`).join('') + `<span>מביאים: <b>${list.map(label).join(', ')}</b></span>`
     : '👆 סמנו על השולחן מה אתם מביאים';
   $('formcard').classList.toggle('ready', list.length > 0);
   if (done) return;
@@ -385,19 +389,21 @@ $('form').addEventListener('submit', async e => {
   if (!name) return err('איך קוראים לכם?', 'name');
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return err('המייל לא נראה תקין', 'email');
   busy = true; $('submit').disabled = true; $('submit').textContent = 'שומרים…'; err('');
-  const items = [...picked.keys()];
+  const items = [...picked].flatMap(([id, set]) => Array(set.size).fill(id));
   let res = {ok:true};
   try {
     if (LIVE) res = await (await fetch(SCRIPT_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
       body: JSON.stringify({name, email, phone, party, items})})).json();
     else { await new Promise(r => setTimeout(r, 700));
-      res = {...state, ok:true, seatsLeft:state.seatsLeft - party, items:state.items.map(i => items.includes(i.id) ? {...i, left:i.left - 1} : i)}; }
+      res = {...state, ok:true, seatsLeft:state.seatsLeft - party, items:state.items.map(i => items.includes(i.id) ? {...i, left:i.left - items.filter(y => y === i.id).length} : i)}; }
   } catch(x){ res = {ok:false, msg:'משהו נתקע בחיבור. נסו שוב בעוד רגע'}; }
   busy = false; $('submit').disabled = false; $('submit').textContent = 'שמרו לי מקום 🍷';
   if (res.items) state = res;
   if (!res.ok){ render(); return err(res.msg || 'משהו השתבש, נסו שוב'); }
-  const names = items.map(id => state.items.find(i => i.id === id).name);
-  mine = new Map(items.map(id => { const it = state.items.find(i => i.id === id), max = it.max > 0 ? it.max : 2; return [id, it.left < 0 ? 0 : it.left]; })); picked = new Map(); done = true;
+  const names = [...picked].map(([id, set]) => state.items.find(i => i.id === id).name + (set.size > 1 ? ' ×' + set.size : ''));
+  // newly taken plates: taken fills from the last copy backwards, so ours start at index `left`
+  mine = new Map([...picked].map(([id, set]) => { const it = state.items.find(i => i.id === id), from = Math.max(0, it.left);
+    return [id, new Set(Array.from({length:set.size}, (_, k) => from + k))]; })); picked = new Map(); done = true;
   $('doneTxt').innerHTML = `${party === 1 ? 'מקום אחד שמור' : party + ' מקומות שמורים'} · מביאים <b>${names.join(', ')}</b>`;
   $('form').hidden = true; $('done').hidden = false;
   render();
