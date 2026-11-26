@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a3324d"/><stop offset="1" stop-color="#3b0f1a"/></linearGradient>
+    <linearGradient id="wine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c2364f"/><stop offset="1" stop-color="#6e1428"/></linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <g transform="translate(-5 1)">
+  <!-- glass bowl -->
+  <path d="M19 10h26c1 9-1 17-6 21-2 1.6-4.4 2.4-7 2.4s-5-.8-7-2.4c-5-4-7-12-6-21z" fill="none" stroke="#f6ebe2" stroke-width="3.2" stroke-linejoin="round"/>
+  <!-- wine -->
+  <path d="M21.4 19h21.2c-.6 5-2.4 8.8-5.2 11-1.6 1.2-3.4 1.8-5.4 1.8s-3.8-.6-5.4-1.8c-2.8-2.2-4.6-6-5.2-11z" fill="url(#wine)"/>
+  <!-- stem + foot -->
+  <path d="M32 34v14" stroke="#f6ebe2" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M23 51h18" stroke="#f6ebe2" stroke-width="3.2" stroke-linecap="round"/>
+  </g>
+  <!-- Claude spark -->
+  <g transform="translate(49 48)" fill="#e8a650">
+    <rect x="-1.6" y="-10" width="3.2" height="8" rx="1.6"/>
+    <rect x="-1.6" y="-10" width="3.2" height="8" rx="1.6" transform="rotate(45)"/>
+    <rect x="-1.6" y="-10" width="3.2" height="8" rx="1.6" transform="rotate(90)"/>
+    <rect x="-1.6" y="-10" width="3.2" height="8" rx="1.6" transform="rotate(135)"/>
+    <rect x="-1.6" y="-10" width="3.2" height="8" rx="1.6" transform="rotate(180)"/>
+    <rect x="-1.6" y="-10" width="3.2" height="8" rx="1.6" transform="rotate(225)"/>
+    <rect x="-1.6" y="-10" width="3.2" height="8" rx="1.6" transform="rotate(270)"/>
+    <rect x="-1.6" y="-10" width="3.2" height="8" rx="1.6" transform="rotate(315)"/>
+  </g>
+</svg>
