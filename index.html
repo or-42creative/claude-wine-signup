@@ -7,9 +7,9 @@
 <meta name="description" content="ערב זוגות של יין, אוכל טוב ולמידה: איך גורמים לקלוד לעבוד בשבילכם. מספר המקומות מוגבל, הרשמה מראש.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://or-42creative.github.io/claude-wine-signup/">
-<meta property="og:title" content="🍷 ערב קלוד ויין · רביעי 25.11 ב-21:00">
+<meta property="og:title" content="🍷 ערב קלוד ויין · חמישי 17.12 ב-20:30">
 <meta property="og:description" content="ערב זוגות של יין, אוכל טוב ולמידה: איך גורמים לקלוד לעבוד בשבילכם. מספר המקומות מוגבל, הרשמה מראש.">
-<meta property="og:image" content="https://or-42creative.github.io/claude-wine-signup/img/og.jpg">
+<meta property="og:image" content="https://or-42creative.github.io/claude-wine-signup/img/og.jpg?v=1712">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="he_IL">
@@ -101,6 +101,9 @@ input[type=email],input[type=tel]{direction:ltr;text-align:right}
 .grp{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;transform:translate(var(--gx),var(--gy))}
 .pair{display:flex;justify-content:center;align-items:center;width:100%}
 .pair .plate:nth-child(2){margin-inline-start:-10%;margin-top:22%}
+.pair.trio .plate{width:44%}
+.pair.trio .plate:nth-child(2){margin-inline-start:-9%;margin-top:30%}
+.pair.trio .plate:nth-child(3){margin-inline-start:-9%}
 .grp .cap{font-size:14px;font-weight:700;line-height:1.2;text-align:center;background:rgba(20,10,13,.82);padding:3px 12px;border-radius:999px;white-space:nowrap;transition:.3s}
 .grp.has .cap{background:var(--amber);color:#1a0d10}
 .plate{all:unset;width:54%;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent;opacity:0}
@@ -150,6 +153,18 @@ input[type=email],input[type=tel]{direction:ltr;text-align:right}
 .p{transition:transform .3s,border-color .3s}.p:hover{transform:translateY(-4px) rotate(-.5deg);border-color:var(--amber)}
 .cta{animation:fadeUp .8s both .48s,bob 2.6s ease-in-out 1.5s infinite}
 @keyframes bob{50%{transform:translateY(-4px)}}
+.bs{margin:2px 0 16px}
+.chk{display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:500;background:#1a0c10;border:1px solid var(--line);border-radius:14px;padding:12px 14px;transition:border .2s,background .2s}
+.chk:hover{border-color:var(--amber)}
+.chk input{position:absolute;opacity:0;width:1px;height:1px}
+.chk .box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--amber);display:grid;place-items:center;transition:background .2s,transform .3s cubic-bezier(.34,1.56,.64,1)}
+.chk input:checked + .box{background:var(--amber);transform:rotate(-8deg) scale(1.1)}
+.chk input:checked + .box::after{content:"✓";color:#1a0d10;font:900 16px Rubik}
+.chk input:focus-visible + .box{outline:2px solid var(--amber);outline-offset:3px}
+.bs.on .chk{border-color:var(--amber);background:rgba(122,31,51,.35)}
+.bsphone{display:grid;grid-template-rows:0fr;opacity:0;margin:0;transition:grid-template-rows .4s,opacity .4s,margin .4s}
+.bsphone>*{overflow:hidden}
+.bs.on .bsphone{grid-template-rows:auto auto;opacity:1;margin:12px 0 0}
 .submit{width:100%;border:0;cursor:pointer;background:var(--amber);color:#1a0d10;font:800 21px Rubik;padding:16px;border-radius:999px;margin-top:4px}
 .submit:disabled{opacity:.6;cursor:wait}
 .err{color:#ffb4b4;font-weight:500;min-height:1.4em;margin-top:10px;text-align:center}
@@ -198,8 +213,8 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:34px 20px 60px
     <h1>ערב קלוד ויין</h1>
     <p class="lead">כוס יין, משהו טעים, ושעתיים שבהן לומדים לגרום לקלוד לעבוד בשבילכם: סרטונים, מצגות, מיילים, יומן והמחשב עצמו.</p>
     <div class="chips">
-      <span class="chip">📅 <b>רביעי 25.11.26</b></span>
-      <span class="chip">🕘 <b><bdi dir="ltr">21:00–23:00</bdi></b></span>
+      <span class="chip">📅 <b>חמישי 17.12.26</b></span>
+      <span class="chip">🕘 <b><bdi dir="ltr">20:30–22:30</bdi></b></span>
       <span class="chip">🏠 אצלנו בבית · <b>האשל 46/8</b></span>
     </div>
     <div><a class="cta" href="#signup">להרשמה ←</a><span class="limited"><i class="dot"></i>מספר המקומות מוגבל · כניסה בהרשמה מראש בלבד</span></div>
@@ -234,15 +249,15 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:34px 20px 60px
     <p class="sub">לא הרצאה. כל אחד עם המחשב שלו, עושים ביחד.</p>
     <div class="prog">
       <div class="p"><span class="e">🤖</span><div><h3>מה זה Claude Desktop</h3><div>ההבדל בין צ'אט שעונה לקלוד שעושה</div></div></div>
-      <div class="p"><span class="e">🎬</span><div><h3>עריכת וידאו</h3><div>חיתוך, כתוביות ותמונות AI, בלי לגעת בתוכנת עריכה</div></div></div>
       <div class="p"><span class="e">🖼️</span><div><h3>מצגות מרשימות</h3><div>נותנים ראשי פרקים, מקבלים מצגת עם תמונות</div></div></div>
-      <div class="p"><span class="e">🌐</span><div><h3>קלוד בדפדפן</h3><div>ממלא טפסים, משווה מחירים, מעלה קמפיינים</div></div></div>
+      <div class="p"><span class="e">🌐</span><div><h3>קלוד בכרום</h3><div>ממלא טפסים, משווה מחירים, מעלה קמפיינים</div></div></div>
+      <div class="p"><span class="e">🎬</span><div><h3>סרטונים עם AI</h3><div>מתסריט וקריינות ועד סרטון מוכן, עם FAL</div></div></div>
       <div class="p"><span class="e">📧</span><div><h3>מייל ויומן</h3><div>מחברים פעם אחת, והוא מסכם, מתזמן ומנסח</div></div></div>
       <div class="p"><span class="e">💻</span><div><h3>המחשב שלכם</h3><div>מסדרים תיקיות, מפנים מקום, מבינים את הראוטר</div></div></div>
       <div class="p"><span class="e">📱</span><div><h3>קלוד בטלפון</h3><div>ממשיכים משימות מהספה</div></div></div>
       <div class="p"><span class="e">💡</span><div><h3>איך מדברים איתו</h3><div>טיפים שחוסכים זמן, טוקנים ועצבים</div></div></div>
     </div>
-    <div class="timeline"><span><b>21:00</b> יין, אוכל והתקנות אחרונות</span><span><b>21:20</b> עושים ביחד</span><span><b>22:40</b> שאלות, ניסויים ועוד כוס</span></div>
+    <div class="timeline"><span><b>20:30</b> יין, אוכל והתקנות אחרונות</span><span><b>20:50</b> עושים ביחד</span><span><b>22:10</b> שאלות, ניסויים ועוד כוס</span></div>
   </section>
 
   <section class="reveal">
@@ -255,7 +270,7 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:34px 20px 60px
 
   <section id="signup" class="reveal">
     <h2>הרשמה: מה אתם מביאים לשולחן?</h2>
-    <p class="sub">כל אחד מביא משהו קטן, ויוצא שולחן מלא. סמנו על השולחן מה אתם מביאים.</p>
+    <p class="sub">כל אחד מביא משהו קטן, ויוצא שולחן מלא. בחרו על השולחן דבר אחד או שניים להביא.</p>
     <div class="tablewrap"><div class="table" id="table"><div class="plates" id="plates"></div></div>
       <div class="legend"><span><i style="background:var(--amber)"></i>הבחירה שלכם</span><span><i style="background:#555"></i>כבר נלקח</span></div></div>
     <div class="formcard" id="formcard">
@@ -270,6 +285,10 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:34px 20px 60px
         </div>
         <div class="row">
           <label class="f"><span>כמה מגיעים? <small>(זה ערב זוגות. תבואו זוג.)</small></span><div class="party" id="party"></div></label>
+        </div>
+        <div class="bs" id="bsBox">
+          <label class="chk"><input type="checkbox" id="bs"><span class="box"></span><span>👶 אני מעוניין לקבל הצעה לבייביסיטר מראשית אסולין</span></label>
+          <label class="f bsphone" id="bsPhone"><span>טלפון <small>(כדי שראשית תוכל לדבר איתכם)</small></span><input id="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="050-0000000"></label>
         </div>
         <button class="submit" id="submit" type="submit">שמרו לי מקום 🍷</button>
         <div class="err" id="err"></div>
@@ -314,10 +333,12 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-CqmrwhvTNykFo4mq8
 const LIVE = SCRIPT_URL.startsWith('https://script.google.com/') && !location.search.includes('demo');
 
 // fallback until the server answers (same list as Code.gs)
-let state = {capacity:14, seatsLeft:14, maxParty:4, items:[
-  ['wine','בקבוק יין'],['salad','סלט'],['cheese','גבינות'],['bread','לחם'],
-  ['crackers','קרקרים'],['quiche','פשטידה'],['dips','זיתים או מטבלים'],['dessert','קינוח']
-].map(([id,name]) => ({id, name, max:2, left:2})).concat([{id:'other', name:'משהו אחר', max:0, left:-1}])};
+let state = {capacity:14, seatsLeft:14, maxParty:4, babysitter:true, items:[
+  ['wine','בקבוק יין',2],['salad','סלט',3],['cheese','גבינות',2],['bread','לחם',1],['crackers','קרקרים',1],
+  ['pasta','פסטה',2],['quiche','פשטידה',2],['dessert','קינוח',3],['dips','זיתים או מטבלים',2]
+].map(([id,name,max]) => ({id, name, max, left:max})).concat([{id:'other', name:'משהו אחר', max:0, left:-1}])};
+// items that share one spot on the table (one plate each)
+const SHARE = {bread:'bakery', crackers:'bakery'};
 let party = 2, picked = new Map(), mine = new Map(), busy = false, done = false;
 const $ = id => document.getElementById(id);
 
@@ -325,12 +346,20 @@ function buildTable(){
   $('plates').innerHTML = '';
   let d = 0;
   const rnd = (a, b) => a + Math.random() * (b - a);
+  const groups = [];
   state.items.forEach(it => {
-    const max = it.max > 0 ? it.max : 1;
+    const key = SHARE[it.id] || it.id, g = groups.find(x => x.key === key);
+    g ? g.items.push(it) : groups.push({key, items:[it]});
+  });
+  groups.forEach(({items}) => {
     const g = document.createElement('div');
-    g.className = 'grp' + (it.max > 0 ? '' : ' center'); g.dataset.id = it.id;
+    g.className = 'grp' + (items[0].max > 0 ? '' : ' center'); g.dataset.ids = items.map(i => i.id).join(' ');
     g.style.cssText = `--gx:${rnd(-8,8)}px;--gy:${rnd(-6,6)}px`;
-    const pair = document.createElement('div'); pair.className = 'pair';
+    const pair = document.createElement('div');
+    const n = items.reduce((a, i) => a + (i.max > 0 ? i.max : 1), 0);
+    pair.className = 'pair' + (n === 3 ? ' trio' : '');
+    items.forEach(it => {
+    const max = it.max > 0 ? it.max : 1;
     for (let c = 0; c < max; c++){
       const b = document.createElement('button');
       b.type = 'button'; b.className = 'plate'; b.dataset.id = it.id; b.dataset.copy = c;
@@ -340,8 +369,9 @@ function buildTable(){
       b.onclick = () => toggle(it.id, c, b);
       pair.appendChild(b);
     }
+    });
     g.appendChild(pair);
-    g.insertAdjacentHTML('beforeend', `<span class="cap">${it.name}</span>`);
+    g.insertAdjacentHTML('beforeend', `<span class="cap">${items.map(i => i.name).join(' · ')}</span>`);
     $('plates').appendChild(g);
   });
 }
@@ -379,14 +409,14 @@ function render(){
     p.querySelector('.card').textContent = isMine ? 'שלכם 🥂' : 'נלקח ✓';
     p.disabled = taken || done;
   });
-  $('plates').querySelectorAll('.grp').forEach(g => g.classList.toggle('has', picked.has(g.dataset.id) || mine.has(g.dataset.id)));
+  $('plates').querySelectorAll('.grp').forEach(g => g.classList.toggle('has', g.dataset.ids.split(' ').some(id => picked.has(id) || mine.has(id))));
   $('plates').classList.toggle('picking', picked.size > 0);
   const list = [...picked.keys()].map(id => byId[id]);
   const label = i => i.name + (picked.get(i.id).size > 1 ? ' ×' + picked.get(i.id).size : '');
   $('pick').classList.toggle('on', list.length > 0);
   $('pick').innerHTML = list.length
     ? list.map(i => `<img src="img/${i.id}.webp" alt="">`).join('') + `<span>מביאים: <b>${list.map(label).join(', ')}</b></span>`
-    : '👆 סמנו על השולחן מה אתם מביאים';
+    : '👆 בחרו על השולחן דבר אחד או שניים להביא';
   $('formcard').classList.toggle('ready', list.length > 0);
   if (done) return;
   const w = waitMode();
@@ -394,6 +424,8 @@ function render(){
   $('full').querySelector('h3').textContent = s.seatsLeft > 0 ? `נשאר רק מקום ${s.seatsLeft === 1 ? 'אחד' : s.seatsLeft}` : 'כל המקומות נתפסו';
   if (w) picked.clear();
   $('submit').textContent = w ? 'הוסיפו אותי לרשימת ההמתנה ⏳' : 'שמרו לי מקום 🍷';
+  $('bsBox').hidden = !s.babysitter;
+  $('bsBox').classList.toggle('on', !!s.babysitter && $('bs').checked);
   $('party').innerHTML = '';
   for (let k = 1; k <= 2; k++){
     const b = document.createElement('button');
@@ -413,19 +445,22 @@ async function load(first){
 
 function waitMode(){ return state.seatsLeft <= 0 || party > state.seatsLeft; }
 
+$('bs').addEventListener('change', () => { $('bsBox').classList.toggle('on', $('bs').checked); if ($('bs').checked) setTimeout(() => $('phone').focus(), 250); });
 $('form').addEventListener('submit', async e => {
   e.preventDefault();
-  const name = $('name').value.trim(), email = $('email').value.trim(), phone = '';
+  const name = $('name').value.trim(), email = $('email').value.trim();
+  const babysitter = !!state.babysitter && $('bs').checked, phone = babysitter ? $('phone').value.trim() : '';
   const wait = waitMode();
-  if (!wait && !picked.size){ $('table').scrollIntoView({behavior:'smooth', block:'center'}); return err('סמנו על השולחן מה אתם מביאים 🙂'); }
+  if (!wait && !picked.size){ $('table').scrollIntoView({behavior:'smooth', block:'center'}); return err('בחרו על השולחן מה אתם מביאים 🙂'); }
   if (!name) return err('איך קוראים לכם?', 'name');
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return err('המייל לא נראה תקין', 'email');
+  if (babysitter && phone.replace(/\D/g, '').length < 9) return err('בשביל הבייביסיטר צריך טלפון', 'phone');
   busy = true; $('submit').disabled = true; $('submit').textContent = 'שומרים…'; err('');
   const items = [...picked].flatMap(([id, set]) => Array(set.size).fill(id));
   let res = {ok:true};
   try {
     if (LIVE) res = await (await fetch(SCRIPT_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({name, email, phone, party, items: wait ? [] : items, waitlist: wait})})).json();
+      body: JSON.stringify({name, email, phone, party, babysitter, items: wait ? [] : items, waitlist: wait})})).json();
     else { await new Promise(r => setTimeout(r, 700));
       res = wait ? {...state, ok:true, waitlist:true} : {...state, ok:true, seatsLeft:state.seatsLeft - party, items:state.items.map(i => items.includes(i.id) ? {...i, left:i.left - items.filter(y => y === i.id).length} : i)}; }
   } catch(x){ res = {ok:false, msg:'משהו נתקע בחיבור. נסו שוב בעוד רגע'}; }
@@ -444,6 +479,7 @@ $('form').addEventListener('submit', async e => {
   mine = new Map([...picked].map(([id, set]) => { const it = state.items.find(i => i.id === id), from = Math.max(0, it.left);
     return [id, new Set(Array.from({length:set.size}, (_, k) => from + k))]; })); picked = new Map(); done = true;
   $('doneTxt').innerHTML = `${party === 1 ? 'מקום אחד שמור' : party + ' מקומות שמורים'} · מביאים <b>${names.join(', ')}</b>`;
+  if (babysitter) $('doneSub').textContent = 'שלחנו מייל עם הכתובת, קוד הכניסה וההוראות להתקנה, וגם זימון ליומן. ראשית תיצור איתכם קשר לגבי הבייביסיטר 👶';
   $('form').hidden = true; $('done').hidden = false;
   render();
   document.querySelectorAll('.plate.mine').forEach(p => confetti(p));
